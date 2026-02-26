@@ -18,7 +18,13 @@ public class Tester {
     }
     
     public static int meshTopology(int i){
-        int ans = (i * (i - 1)) / 2;
+        int ans;
+        if(i == 0){
+            return 0;
+        }
+        ans = (i-1) + meshTopology(i - 1);
         return ans;
     }
 }
+
+
