@@ -7,7 +7,6 @@
  *
  * @author User
  */
-import java.lang.reflect.Array;
 import java.util.*;
 public class ArrayBag<T> implements BagInterface<T>{
     private ArrayList<T> bag;
@@ -98,47 +97,48 @@ public class ArrayBag<T> implements BagInterface<T>{
     }
 
     @Override
-    public T[] union(BagInterface<T> bag2) {
-        ArrayList<T> result = new ArrayList<>(bag);
-        result.addAll(Arrays.asList(bag2.toArray()));
+    public BagInterface<T> union(BagInterface<T> bag2) {
+        BagInterface<T> unionBag = new ArrayBag<>();
         
-        @SuppressWarnings("unchecked")
-        T[] array = (T[]) result.toArray(new Object[0]);
-        return array;
+        T[] firstBagContents = this.toArray();
+        for (T item : firstBagContents) {
+            unionBag.add(item);
+        }
+        
+        T[] secondBagContents = bag2.toArray();
+        for (T item : secondBagContents) {
+            unionBag.add(item);
+        }
+        
+        return unionBag;
     }
 
     @Override
-    public T[] intersection(BagInterface<T> bag2) {
-        ArrayList<T> result = new ArrayList<>();
-        ArrayList<T> temp = new ArrayList<>(Arrays.asList(bag2.toArray()));
-
+    public BagInterface<T> intersection(BagInterface<T> bag2) {
+        BagInterface<T> intersectionBag = new ArrayBag<>();
+        
         for (T item : bag) {
-            if (temp.contains(item)) {
-                result.add(item);
-                temp.remove(item);
+            if (bag2.contains(item)) {
+                intersectionBag.add(item);
+                bag2.remove(item);
             }
         }
         
-        @SuppressWarnings("unchecked")
-        T[] array = (T[]) result.toArray(new Object[0]);
-        return array;
+        return intersectionBag;
     }
 
     @Override
-    public T[] difference(BagInterface<T> bag2) {
-        ArrayList<T> result = new ArrayList<>();
-        ArrayList<Object> temp = new ArrayList<>(Arrays.asList(bag2.toArray()));
-
+    public BagInterface<T> difference(BagInterface<T> bag2) {
+        BagInterface<T> differenceBag = new ArrayBag<>();
         for (T item : bag) {
-            if (temp.contains(item)) {
-                temp.remove(item);
+            if (bag2.contains(item)) {
+                bag2.remove(item);
             } else {
-                result.add(item);
+                differenceBag.add(item);
             }
         }
-        @SuppressWarnings("unchecked")
-        T[] array = (T[]) result.toArray(new Object[0]);
-        return array;
+        
+        return differenceBag;
     } 
 }
 
