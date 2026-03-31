@@ -9,34 +9,65 @@
  */
 import java.util.*;
 public class CandyMachine {
-    public static void main(String[] args) {
-        Scanner input = new Scanner(System.in);
-        
-        System.out.println("We are selling candies, chips, gum and cookies");
-        System.out.print("Please make your selection : (1)candies (2)chips (3)gum (4)cookies");
-        int choice = input.nextInt();
-        
-        String type = "";
-        
-        switch(choice){
-            case 1 -> type = "Candies";
-            case 2 -> type = "Chips";
-            case 3 -> type = "Gum";
-            case 4 -> type = "Cookies";
+    private Dispenser candyDispenser;
+    private Dispenser chipsDispenser;
+    private Dispenser gumDispenser;
+    private Dispenser cookiesDispenser;
+    private CashRegister cashRegister;
+    
+    public CandyMachine(){
+        candyDispenser = new Dispenser("Candy", 50, 10);
+        chipsDispenser = new Dispenser("Chips", 75, 10);
+        gumDispenser = new Dispenser("Gum", 25, 10);
+        cookiesDispenser = new Dispenser("Cookies", 100, 10);
+
+        cashRegister = new CashRegister(1000);
+    }
+    
+    public void showSelection(){
+        System.out.println("Welcome to the dispenser");
+        System.out.println("1. Candy - $" + (candyDispenser.getProductCost() / 100.0));
+        System.out.println("2. Chips - $" + (chipsDispenser.getProductCost() / 100.0));
+        System.out.println("3. Gum - $" + (gumDispenser.getProductCost() / 100.0));
+        System.out.println("4. Cookies - $" + (cookiesDispenser.getProductCost() / 100.0));
+        System.out.println("0. Exit");
+    }
+    
+    public void sellProduct(int choice) {
+        Dispenser selectedDispencer = null;
+        switch (choice) {
+            case 1 -> selectedDispencer = candyDispenser;
+            case 2 -> selectedDispencer = chipsDispenser;
+            case 3 -> selectedDispencer = gumDispenser;
+            case 4 -> selectedDispencer = cookiesDispenser;
+            case 0 -> {System.out.println("Thank you for visiting"); return;}
+            default -> {
+                System.out.println("Invalid selection!"); return;
+            }
         }
-        
-        Dispenser dispenser = new Dispenser(type);
-        
-        System.out.println("The price for a single item is RM" + dispenser.getPrice());
-        System.out.print("Enter amount to buy : ");
-        int amount = input.nextInt();
-        
-        double totalPurchase = dispenser.getTotalPurchase(amount);
-        System.out.println("Total Amount to Pay : RM" + totalPurchase);
-        System.out.print("Cash Given : ");
-        double cashPaid = input.nextDouble();
-        
-        System.out.println("Change Given : RM" + dispenser.getChange(cashPaid));
-        System.out.println(type + " released");
-    }    
+
+        if (selectedDispencer.isEmpty()) {
+            System.out.println("Sorry, " + selectedDispencer.getProductName() + " is sold out!");
+            return;
+        }
+
+        System.out.println("Price: $" + (selectedDispencer.getProductCost() / 100.0));
+        System.out.print("Insert money (in cents): ");
+        Scanner scanner = new Scanner(System.in);
+        int amountInserted = scanner.nextInt();
+
+        if (amountInserted < selectedDispencer.getProductCost()) {
+            System.out.println("Insufficient money. Returning $" + (amountInserted / 100.0));
+            return;
+        }
+
+        cashRegister.acceptAmount(selectedDispencer.getProductCost());
+        int change = amountInserted - selectedDispencer.getProductCost();
+        if (change > 0) {
+            System.out.println("Your change: $" + (change / 100.0));
+        }
+
+        selectedDispencer.makeSale();
+        System.out.println("Enjoy your " + selectedDispencer.getProductName() + "!");
+    }
 }

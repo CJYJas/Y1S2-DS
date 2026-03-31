@@ -8,23 +8,31 @@
  * @author User
  */
 public class CashRegister {
-    private double totalPurchase;
-    private double cashPaid;
-    private double change;
-    
-    public CashRegister(double totalPurchase, double cashPaid){
-        this.totalPurchase = totalPurchase;
-        this.cashPaid = cashPaid;
+    private int cashOnHand;
+
+    public CashRegister(int cashOnHand){
+        this.cashOnHand = cashOnHand;
     }
-    
-    public double CalculateChange(){
-        if(cashPaid < totalPurchase){
-            System.out.println("Not Enough");
-            return 0.0;
-        }else{
-            change = cashPaid - totalPurchase;
+
+    public int getCashOnHand(){
+        return cashOnHand;
+    }
+
+    public void acceptAmount(int amount){
+        cashOnHand += amount;
+    }
+
+    public int returnChange(int amountReceived) {
+        if (amountReceived > cashOnHand) {
+            int change = amountReceived - cashOnHand;
+            cashOnHand = 0;
+            return change;
         }
-        
-        return change;
+        cashOnHand -= amountReceived;
+        return 0;
+    }
+
+    public boolean isEmpty(){
+        return cashOnHand == 0;
     }
 }

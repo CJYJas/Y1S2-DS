@@ -7,35 +7,36 @@
  *
  * @author User
  */
-import java.util.*;
 public class Dispenser {
-    private String type;
-    private double price;
-    private double totalPurchase;
-    private Map<String, Double> priceList = new HashMap<>();
-    
-    public Dispenser(String type){
-        this.type = type;
-        priceList.put("Candies", 0.2);
-        priceList.put("Chips", 3.5);
-        priceList.put("Gum", 1.2);
-        priceList.put("Cookies", 2.5);
+    private String productName;
+    private int productCost;
+    private int numberOfItems;
+
+    public Dispenser(String productName, int productCost, int numberOfItems){
+        this.productName =  productName;
+        this.productCost = productCost;
+        this.numberOfItems = numberOfItems;
     }
-    
-    public double getPrice(){
-        price =  priceList.get(type);
-        return price;
+
+    public String getProductName(){
+        return productName;
     }
-    
-    public double getTotalPurchase(int amount){
-        totalPurchase = amount * price;
-        return totalPurchase;
+
+    public int getProductCost(){
+        return productCost;
     }
-    
-    public double getChange(double cashPaid){
-        CashRegister change = new CashRegister(totalPurchase, cashPaid);
-        double changeGiven = change.CalculateChange();
-        
-        return changeGiven;
+
+    public int getNumberOfItems(){
+        return numberOfItems;
+    }
+
+    public void makeSale(){
+        if(numberOfItems > 0){
+            numberOfItems--;
+        }
+    }
+
+    public boolean isEmpty(){
+        return numberOfItems == 0;
     }
 }
