@@ -22,7 +22,7 @@ public class Tester {
         
         // --- 2. Collection Management ---
         // Create the manager and an array to facilitate bulk addition
-        CourseManager courseManager = new CourseManager();
+        CourseManager<Course> courseManager = new CourseManager();
         
         // Polymorphism in action: Both Lab and Lecture courses fit in a Course array
         Course[] courseList = {lectureCourse1, lectureCourse2, labCourse1, labCourse2};

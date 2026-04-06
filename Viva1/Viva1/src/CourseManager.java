@@ -25,14 +25,14 @@ public class CourseManager<T extends Course>{
     }
     
     public T getCourseWithHighestWorkload(){
-        Number highestWorkLoad = Integer.MAX_VALUE;
+        Number highestWorkLoad = Integer.MIN_VALUE;
         T highestWorkLoadCourse = courseList.getFirst();
         
         for(T c : courseList){
             Number workload = (Number) c.calculateTotalWorkload();
             
             if(workload.doubleValue() > highestWorkLoad.doubleValue()){
-                highestWorkLoad = (Integer) workload;
+                highestWorkLoad = (Number) workload;
                 highestWorkLoadCourse = c;
             }
         }
