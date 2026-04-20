@@ -6,14 +6,13 @@
 /**
  *
  * @author User
- * @param <E>
  */
-public class Node<E>{
-    E element;
-    Node<E> next;
+public class LinkedListNode<T>{
+    LinkedListNode next;
+    T val;
     
-    public Node(E element){
-        this.element = element;
-        next = null;
+    public LinkedListNode(T val){
+        this.next = null;
+        this.val = val;
     }
 }

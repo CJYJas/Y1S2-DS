@@ -10,15 +10,19 @@
  */
 import java.util.*;
 public class CourseManager<T extends Course>{
-    private List<T> courseList = new ArrayList<>();
+    private final List<T> courseList = new ArrayList<>();
     
     public void addCourse(T course){
         courseList.add(course);
     }
     
-    public void removeCourse(String courseCode){
+    /**
+     * To remove course from the coureList
+     * @param course 
+     */
+    public void removeCourse(T course){
         for(T c : courseList){
-            if(c.getCourseCode().equals(courseCode)){
+            if(c.equals(course)){
                 courseList.remove(c);
             }
         }

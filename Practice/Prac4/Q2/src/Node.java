@@ -6,14 +6,13 @@
 /**
  *
  * @author User
- * @param <E>
  */
 public class Node<E>{
-    E element;
-    Node<E> next;
+    Node next;
+    E val;
     
-    public Node(E element){
-        this.element = element;
-        next = null;
+    public Node(E val){
+        this.next = null;
+        this.val = val;
     }
 }

@@ -6,14 +6,12 @@
 /**
  *
  * @author User
- * @param <E>
  */
-public class Node<E>{
-    E element;
-    Node<E> next;
+import java.util.*;
+public class StackLogic<T>{
+    Stack<T> list = new Stack<>();
     
-    public Node(E element){
-        this.element = element;
-        next = null;
+    public StackLogic(Stack<T> list){
+        this.list = list;
     }
 }

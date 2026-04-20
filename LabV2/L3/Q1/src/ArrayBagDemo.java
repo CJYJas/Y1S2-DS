@@ -6,15 +6,16 @@
 /**
  *
  * @author User
+ * @param <T>
  */
-public class ArrayBagDemo {
-    private static void testAdd(BagInterface<String> aBag, String[] content){
-        for(String s : content){
+public class ArrayBagDemo<T>{
+    private static <T> void testAdd(BagInterface<T> aBag, T[] content){
+        for(T s : content){
             aBag.add(s);
         }
     }   
     
-    private static void displayBag(BagInterface<String> aBag){
+    private static <T> void displayBag(BagInterface<T> aBag){
         System.out.println("The bags contains " + aBag.getCurrentSize() + " string(s) as follows : ");
         Object[] list = aBag.toArray();
         
@@ -41,34 +42,16 @@ public class ArrayBagDemo {
         System.out.println("Adding A B A C B C D another string");
         displayBag(bag2);
         
-        Object[] unionObjects = bag1.union(bag2);
-        String[] unionItems = new String[unionObjects.length];
-        for (int i = 0; i < unionObjects.length; i++) {
-            unionItems[i] = (String) unionObjects[i];
-        }
-        ArrayBag bag3 = new ArrayBag();
-        testAdd(bag3, unionItems);
-        System.out.println("bag3, test the method union of bag1 and bag2");
-        displayBag(bag3);
+        BagInterface<String> diffItems = bag1.difference(bag2); 
+        System.out.println("bag3, test the method difference of bag1 and bag2");
+        displayBag(diffItems);
         
-        Object[] commonObjects = bag1.intersection(bag2);
-        String[] commonItems = new String[commonObjects.length];
-        for (int i = 0; i < commonObjects.length; i++) {
-            commonItems[i] = (String) commonObjects[i];
-        }
-        ArrayBag bag4 = new ArrayBag();
-        testAdd(bag4, commonItems);
-        System.out.println("bag4, test the method intersection of bag1 and bag2");
-        displayBag(bag4);
+        BagInterface<String> unionItems = bag1.union(bag2); 
+        System.out.println("bag4, test the method union of bag1 and bag2");
+        displayBag(unionItems);
         
-        Object[] diffObjects = bag1.difference(bag2);
-        String[] differenceItems = new String[diffObjects.length];
-        for (int i = 0; i < diffObjects.length; i++) {
-            differenceItems[i] = (String) diffObjects[i];
-        }
-        ArrayBag bag5 = new ArrayBag();
-        testAdd(bag5, differenceItems);
-        System.out.println("bag5, test the method difference of bag1 and bag2");
-        displayBag(bag5);
+        BagInterface<String> intersectionItems = bag1.union(bag2); 
+        System.out.println("bag5, test the method intersection of bag1 and bag2");
+        displayBag(intersectionItems);
     }
 }

@@ -5,6 +5,7 @@
 
 /**
 An interface that describes the operations of a bag of objects.
+ * @param <T>
 */
 public interface BagInterface<T>
 {
@@ -57,19 +58,19 @@ public interface BagInterface<T>
      * @param bag2
      * @return a newly allocated array for all the entries in both bag
      */
-    public T[] union(BagInterface<T> bag2);
+    public BagInterface<T> union(BagInterface<T> bag2);
     
     /**Find special items from two bags
      * 
      * @param bag2
      * @return a newly allocated array for special items in both bags
      */
-    public T[] intersection(BagInterface<T> bag2);
+    public BagInterface<T> intersection(BagInterface<T> bag2);
     
     /**Find difference
      * 
      * @param bag2
      * @return the leftOver after deduct the repeated items
      */
-    public T[] difference(BagInterface<T> bag2);
+    public BagInterface<T> difference(BagInterface<T> bag2);
 } // end BagInterface

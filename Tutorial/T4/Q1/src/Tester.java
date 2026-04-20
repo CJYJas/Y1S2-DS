@@ -9,13 +9,13 @@
  */
 public class Tester{
     public static void main(String[] args) {
-        Node<Character> head;
-        Node<Character> tail;
         Node<Character> node1 = new Node<>('a');
         Node<Character> node2 = new Node<>('z');
         
-        head = node1;
-        tail = node2;
-        head.next = tail;
+        Logic logic = new Logic(node1, node2);
+        
+        Node<Character> firstNode = new Node<>('-');
+        
+        logic.addFirst(firstNode);
     }
 }
