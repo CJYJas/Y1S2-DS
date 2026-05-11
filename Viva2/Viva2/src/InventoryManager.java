@@ -17,20 +17,34 @@ class InventoryManager{
     }
     
     public void loadFromFile(String filename){
+        list.clear();
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(filename)))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 if (line.trim().isEmpty()) continue;
                 
-                String[] element = line.split(" ");
-                
-                int id = Integer.parseInt(element[0]);
-                String name = element[1];
-                double price = Double.parseDouble(element[2]);
-                int stock = Integer.parseInt(element[3]);
-                
+                // Support both formats:
+                // - PDF spec: ID,Name,Price,Stock
+                // - Current file: ID Name Price Stock
+                String[] element;
+                if (line.contains(",")) {
+                    element = line.split("\\s*,\\s*");
+                } else {
+                    element = line.trim().split("\\s+");
+                }
+
+                if (element.length != 4) {
+                    System.out.println("Skipping invalid record: " + line);
+                    continue;
+                }
+
+                int id = Integer.parseInt(element[0].trim());
+                String name = element[1].trim();
+                double price = Double.parseDouble(element[2].trim());
+                int stock = Integer.parseInt(element[3].trim());
+
                 Product newProduct = new Product(id, name, price, stock);
-                list.add(newProduct);
+                addProduct(newProduct);
             }
         }catch(FileNotFoundException e){
             System.out.println("Error : " + e.getMessage());
@@ -43,7 +57,8 @@ class InventoryManager{
     public void saveToFile(String filename){
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
             for (Product p : list) {
-                String record = p.getId() + " " + p.getName() + " " + p.getPrice() + " " + p.getStock();
+                // Save in the PDF format: ID,Name,Price,Stock
+                String record = p.getId() + "," + p.getName() + "," + p.getPrice() + "," + p.getStock();
                 writer.write(record);
                 writer.newLine();
             }
@@ -61,24 +76,25 @@ class InventoryManager{
     }
     
     public void removeProduct(int id){
-        for(Product p : list){
-            if(p.getId() == id){
-                list.remove(p);
+        Iterator<Product> it = list.iterator();
+        while (it.hasNext()) {
+            Product p = it.next();
+            if (p.getId() == id) {
+                it.remove();
+                System.out.println("Product removed.");
                 return;
             }
         }
-        
-        System.out.println("Id not found");
+
+        System.out.println("Id not found.");
     }
     
     public Product searchById(int id){
         for(Product p : list){
             if(p.getId() == id){
-                System.out.print(p.toString());
                 return p;
             }
         }
-        System.out.println("Id not found");
         return null;
     }
     
@@ -106,7 +122,8 @@ class InventoryManager{
         System.out.printf("%-10s %-20s %-10s %-10s%n", "ID", "Name", "Price", "Stock");
         System.out.println("------------------------------------------------------------");
         for(Product p : list){
-            System.out.println(p);
+            System.out.printf("%-10d %-20s RM%-8.2f %-10d%n",
+                    p.getId(), p.getName(), p.getPrice(), p.getStock());
         }
     }
     
@@ -116,8 +133,6 @@ class InventoryManager{
                 return p;
             }
         }
-        
-        System.out.println("Id not found");
         return null;
     }
     

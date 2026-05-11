@@ -16,22 +16,22 @@ class CartStack {
         this.size = 0;
     }
     
-    public void push(Product product){
-        CartNode stackNode = new CartNode(product, 0); 
+    public void push(Product product, int qtyAdded){
+        CartNode stackNode = new CartNode(product, qtyAdded);
         stackNode.setNext(top);
         top = stackNode;
         size++;
     }
     
-    public Product pop() {
+    public CartNode pop() {
         if (isEmpty()) {
-            System.out.println("Nothing to undo.");
             return null;
         }
-        Product poppedProduct = top.getProduct();
+        CartNode poppedNode = top;
         top = top.getNext();
         size--;
-        return poppedProduct;
+        poppedNode.setNext(null);
+        return poppedNode;
     }
     
     public Product peek() {

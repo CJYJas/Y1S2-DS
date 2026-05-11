@@ -10,7 +10,7 @@
 public class CartList {
     private CartNode head;
     private int size;
-    private CartStack undoStack;
+    private final CartStack undoStack;
     
     public CartList(){
         this.head = null;
@@ -26,6 +26,8 @@ public class CartList {
         
        if(findItem(p.getId()) != null){
            updateQuantity(p.getId(), findItem(p.getId()).getQuantity() + qty);
+           // Record this addition so undo removes exactly qty (not the whole item).
+           undoStack.push(p, qty);
            return;
        }
        
@@ -42,7 +44,7 @@ public class CartList {
             curr.setNext(newItem);
         }
        
-        undoStack.push(p);
+        undoStack.push(p, qty);
         size++;
     }
     
@@ -173,17 +175,32 @@ public class CartList {
         
         head = null;
         size = 0;
+        undoStack.clear();
     }
     
     public void undo(){
-        Product lastAdded = undoStack.pop(); 
-        
-        if (lastAdded != null) {
-            removeItem(lastAdded.getId()); 
-            System.out.println("Undo successful: " + lastAdded.getName() + " removed.");
-        } else {
+        CartNode action = undoStack.pop();
+        if (action == null) {
             System.out.println("Nothing to undo.");
+            return;
         }
+
+        Product p = action.getProduct();
+        int qtyAdded = action.getQuantity();
+        CartNode nodeInCart = findItem(p.getId());
+        if (nodeInCart == null) {
+            System.out.println("Undo skipped: item is no longer in cart.");
+            return;
+        }
+
+        int currentQty = nodeInCart.getQuantity();
+        if (qtyAdded >= currentQty) {
+            removeItem(p.getId());
+        } else {
+            updateQuantity(p.getId(), currentQty - qtyAdded);
+        }
+
+        System.out.println("Undo successful: reverted last addition of " + qtyAdded + " x " + p.getName() + ".");
     }
     
     public int getSize(){
@@ -201,8 +218,8 @@ public class CartList {
         }
         
         displayCart();
-        undoStack.clear();
         head = null;
         size = 0;
+        undoStack.clear();
     }
 }
