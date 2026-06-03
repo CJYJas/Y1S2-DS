@@ -10,34 +10,39 @@
 import java.util.*;
 public class Tester {
     public static void main(String[] args) {
-        int[] list = {5, 16, 19, 18, 16, 17, 9, 0, 1, 9};
-        BinarySearchTree tree = new BinarySearchTree();
-        
-        System.out.println("The random numbers are 5 16 19 18 16 17 9 0 1 9");
-        
-        for(int i : list){
-            tree.insert(i);
-        }
-        Node root = tree.root;
-        
-        System.out.println("The number of elements in the tree : " + tree.totalCount);
-        
-        System.out.print("The tree elements - PREORDER : ");
-        tree.preOrder();
-        System.out.print("The tree elements - INORDER : ");
-        tree.inorder();
-        System.out.print("The tree elements - POSTORDER : ");
-        tree.postOrder();
-        
-        System.out.println("The minimum number is " + tree.getMinimumValue(root));
-        System.out.println("The maximum number is " + tree.getMaximumValue(root));
-        System.out.println("The total is " + tree.getTotalValue(root));
-        
+        Random rand = new Random();
         Scanner input = new Scanner(System.in);
+        
+        
+        Integer[] list = new Integer[10];
+        for(int i = 0; i < 10; i++){
+            list[i] = rand.nextInt(21);
+        }
+        BST<Integer> binarySearchTree = new BST<>(list);
+        
+        System.out.print("The random numbers are ");
+        for(Integer i : list){
+            System.out.print(i + " ");
+            binarySearchTree.insert(i);
+        }
+        System.out.println("");
+        
+        System.out.println("The number of unique elements in the tree : " + binarySearchTree.getSize());
+        System.out.print("The tree elements - PREORDER : ");
+        binarySearchTree.preOrder();
+        System.out.println("");
+        System.out.print("The tree elements - INORDER : ");
+        binarySearchTree.inOrder();
+        System.out.print("The tree elements - POSTORDER : ");
+        binarySearchTree.postOrder();
+        System.out.println("");
+        
+        System.out.println("The minimum number is : " + binarySearchTree.getMinimum());
+        System.out.println("The maximum number is : " + binarySearchTree.getMaximum());
+        System.out.println("The total is : " + binarySearchTree.getTotal());
+    
         System.out.print("Enter a number to search : ");
-        int target = input.nextInt();
-        System.out.println("The number of occurrence of " + target + " is " + tree.countOccurance(target));
-    }   
+        int search = input.nextInt();
+        System.out.println("The number of occurrence of " + search + " is " + binarySearchTree.searchFrequency(search));
+    }
 }
-
-

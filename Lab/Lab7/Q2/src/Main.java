@@ -7,32 +7,27 @@
  *
  * @author User
  */
-import java.util.*;
 import java.io.*;
-public class Tester {
+import java.util.*;
+public class Main {
     public static void main(String[] args) {
-        System.out.println("Word Frequency Generator Program");
+        String fileName = "L7Q2.txt";
         ArrayList<String> list = new ArrayList<>();
+        BST<String> tree = new BST<>(list);
         
-        try(BufferedReader reader = new BufferedReader(new FileReader("L7Q2.txt"))){
+        try(BufferedReader reader = new BufferedReader(new FileReader(fileName))){
             String line;
             while((line = reader.readLine()) != null){
                 list.add(line);
+                tree.insert(line);
             }
+            
             reader.close();
-        }catch(FileNotFoundException e){
-            System.out.println("Error : " + e.getMessage());
         }catch(IOException e){
             System.out.println("Error : " + e.getMessage());
         }
         
-        BinarySearchTree tree = new BinarySearchTree();
-        
-        for(String s : list){
-            tree.insert(s);
-        }
-        Node root = tree.root;
-        
-        tree.inorder();
-    }    
+        System.out.println("Word Frequency Generator Program");
+        tree.inOrder();
+    }
 }
